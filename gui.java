@@ -4,11 +4,17 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-public class gui {
-    public gui() {
+public class gui extends Buy{
+    public gui(User user) {
         JFrame f = new JFrame("TradeIT");
+        JButton button = new JButton("Click to Close!");
+        button.setBounds(20, 20, 50, 50);
+        button.addActionListener(e -> {
+            f.dispose();
+         });
+        f.add(button);
         JPanel p1 = null;
-        p1 = tabBuy(p1);
+        p1 = tabBuy(p1, user);
         JPanel p2 = null;
         p2 = tabSell(p2);
         JPanel p3 = null;
@@ -24,7 +30,7 @@ public class gui {
         f.setVisible(true);
     }
 
-    public static JPanel tabBuy(JPanel p1) {
+    public static JPanel tabBuy(JPanel p1, User user) {
         JButton buy = new JButton("Buy");
         p1=new JPanel();
         String country[]={"AAPL","NVDA","GOOG"};
@@ -36,11 +42,14 @@ public class gui {
         p1.add(tf1);
         p1.add(buy);
         p1.add(buy);
+
         buy.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                String data = "Bought: "
-                        + cb.getItemAt(cb.getSelectedIndex());
+                String data = "Bought: " + cb.getItemAt(cb.getSelectedIndex());
                 System.out.println(data);
+                String stock = (String) cb.getItemAt(cb.getSelectedIndex());
+                int amount = Integer. parseInt(tf1.getText());
+                buyStock(stock, amount, user);
             }
         });
         return p1;

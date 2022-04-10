@@ -3,16 +3,30 @@ import java.util.*;
 import java.util.ArrayList;
 import javax.swing.*;
 
-public class Menu {
+public class Menu extends Account{
+    
+    private User user;
     public static void main(String[] args) {
+        new Menu();
+    }
 
-        Client user = new Client();
-        //new Menu(user);
+    public Menu() {
+        this.user = new User();
         ArrayList<Stocks> stocks = new ArrayList<Stocks>();
         stocks.add(new Stocks("AAPL", 180, 190, 170));
         stocks.add(new Stocks("NVDA", 2680, 2690, 2150));
         stocks.add(new Stocks("AMZN", 550, 610, 510));
-        gui f = new gui();
+        gui f = new gui(user);
+        try {
+            TimeUnit.SECONDS.sleep(10);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        System.out.println(getUser().getAccount().getPortfolio());
+    }
+
+    public User getUser() {
+        return user;
     }
 
     /*public Menu(Client user) {

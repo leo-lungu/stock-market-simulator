@@ -1,4 +1,4 @@
-public class Trade {
+public interface Trade {
     public static void checkHoldings() {
     }
 }
