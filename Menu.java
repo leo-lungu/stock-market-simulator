@@ -1,28 +1,22 @@
 import java.util.concurrent.TimeUnit;
-import java.util.*;
-import java.util.ArrayList;
-import javax.swing.*;
 
-public class Menu extends Account{
-    
+public class Menu{
+
     private User user;
     public static void main(String[] args) {
         new Menu();
     }
 
     public Menu() {
-        this.user = new User();
-        ArrayList<Stocks> stocks = new ArrayList<Stocks>();
-        stocks.add(new Stocks("AAPL", 180, 190, 170));
-        stocks.add(new Stocks("NVDA", 2680, 2690, 2150));
-        stocks.add(new Stocks("AMZN", 550, 610, 510));
-        gui f = new gui(user);
+        user = new User();
+        System.out.println("test3");
+        gui f = new gui(this.user);
         try {
             TimeUnit.SECONDS.sleep(10);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-        System.out.println(getUser().getAccount().getPortfolio());
+        //System.out.println(getUser().getAccount().getPortfolio());
     }
 
     public User getUser() {
@@ -62,7 +56,7 @@ public class Menu extends Account{
         return currency;
     }*/
 
-    public static String scanner() {
+    /* public static String scanner() {
         Scanner scanner = new Scanner(System.in);
         String text = "";
         text = scanner.nextLine();
@@ -74,5 +68,5 @@ public class Menu extends Account{
         int text = 0;
         text = Integer.parseInt(scanner.nextLine());
         return text;
-    }
+    } */
 }

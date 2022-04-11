@@ -1,15 +1,13 @@
 import java.util.ArrayList;
-import java.util.function.IntFunction;
 
 public class Account{
     //creates the variables
-    private int balance;
+    private double balance;
     private double interest = 0.01;
     static int counter;
     String currency;
     ArrayList<Integer> stocksHeld = new ArrayList<Integer>();
 
-    
     public Account(){
         this.balance=0; //initialises the account balance
         this.stocksHeld.add(0);
@@ -17,12 +15,12 @@ public class Account{
         this.stocksHeld.add(0);
     }    
 
-    public Account(int balance){
+    public Account(double balance){
         this.balance = balance; //sets the account balance
     }
 
 
-    public Account(int balance, double interestRate){ //account constructor but for accounts with a special interest rate
+    public Account(double balance, double interestRate){ //account constructor but for accounts with a special interest rate
         this.interest = interestRate; //sets interest rate too
         this.balance = balance;
     }
@@ -31,11 +29,11 @@ public class Account{
         return this.interest;
     }
 
-    public int getBalance(){ //gets balance
+    public double getBalance(){ //gets balance
         return this.balance;
     }    
 
-    public void setBalance(int amount){ //sets balance
+    public void setBalance(double amount){ //sets balance
         this.balance = amount;
     }
 
@@ -47,15 +45,15 @@ public class Account{
         return this.currency;
     }   
 
-    public void deposit(int amount){ //deposits into the account
+    public void deposit(double amount){ //deposits into the account
         this.balance += amount;
     }
     
-    public void withdraw(int amount) { //withdraws from the account
-        if (amount > this.balance) { //checks whether there is enough money on the account
+    public void withdraw(double cost) { //withdraws from the account
+        if (cost > this.balance) { //checks whether there is enough money on the account
             System.out.println("Error. The amount to be withdrawn exceeds this account's balance."); //if there isn't, user gets a method
         } else {
-            this.balance -= amount; //if there is, money is withdrawn
+            this.balance -= cost; //if there is, money is withdrawn
         }
     }
 
@@ -87,6 +85,19 @@ public class Account{
         } 
         return stockNo;
     }
+
+    public int stockInt(String stock) {
+        int stockNo = 0;
+        if (stock.equals("AAPL")) {
+            stockNo = 0;
+        } else if(stock.equals("NVDA")) {
+            stockNo = 1;
+        } else if (stock.equals("AMZN")) {
+            stockNo = 2;
+        } 
+        return stockNo;
+    }
+
     public ArrayList<Integer> getPortfolio() {
         return this.stocksHeld;
     }

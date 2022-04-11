@@ -1,11 +1,8 @@
-import java.util.*;
-
-public class Stocks {
+public class Stocks{
     private String ticker;
     private double currentPrice;
     private double maxPrice;
     private double minPrice;
-    private Random random;
 
     public Stocks(String ticker, double currentPrice, double maxPrice, double minPrice) {
         this.ticker = ticker;
@@ -14,7 +11,7 @@ public class Stocks {
         this.minPrice = minPrice;
     }
 
-    public void setPrice(int newPrice) {
+    public void setPrice(double newPrice) {
         this.currentPrice = newPrice;
     }
 
@@ -22,7 +19,7 @@ public class Stocks {
         return this.currentPrice;
     }
 
-    public void setMaxPrice(int maxPrice) {
+    public void setMaxPrice(double maxPrice) {
         this.maxPrice = maxPrice;
     }
 
@@ -30,7 +27,7 @@ public class Stocks {
         return this.maxPrice;
     }
 
-    public void setMinPrice(int minPrice) {
+    public void setMinPrice(double minPrice) {
         this.minPrice = minPrice;
     }
 
@@ -41,5 +38,6 @@ public class Stocks {
     public String getTicker() {
         return this.ticker;
     }
+
 
 }
