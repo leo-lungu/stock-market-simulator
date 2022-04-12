@@ -1,14 +1,10 @@
 public class Stocks{
     private String ticker;
     private double currentPrice;
-    private double maxPrice;
-    private double minPrice;
 
-    public Stocks(String ticker, double currentPrice, double maxPrice, double minPrice) {
+    public Stocks(String ticker, double currentPrice) {
         this.ticker = ticker;
         this.currentPrice = currentPrice;
-        this.maxPrice = maxPrice;
-        this.minPrice = minPrice;
     }
 
     public void setPrice(double newPrice) {
@@ -17,22 +13,6 @@ public class Stocks{
 
     public double getPrice() {
         return this.currentPrice;
-    }
-
-    public void setMaxPrice(double maxPrice) {
-        this.maxPrice = maxPrice;
-    }
-
-    public double getMaxPrice() {
-        return this.maxPrice;
-    }
-
-    public void setMinPrice(double minPrice) {
-        this.minPrice = minPrice;
-    }
-
-    public double getMinPrice() {
-        return this.minPrice;
     }
 
     public String getTicker() {

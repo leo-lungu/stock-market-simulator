@@ -9,9 +9,9 @@ public class Market{
 
     public Market() {
         this.stocks = new ArrayList<Stocks>();
-        stocks.add(new Stocks("AAPL", 180, 190, 170));
-        stocks.add(new Stocks("NVDA", 2680, 2690, 2150));
-        stocks.add(new Stocks("AMZN", 550, 610, 510));
+        stocks.add(new Stocks("AAPL", 180));
+        stocks.add(new Stocks("NVDA", 2680));
+        stocks.add(new Stocks("AMZN", 550));
     
         Thread thread = new Thread(new Runnable() {
             public void run() {
@@ -42,9 +42,8 @@ public class Market{
         return this.marketOn;
     }
 
-    public boolean marketOnTrue() {
-        this.marketOn = true;
-        return this.marketOn = true;
+    public boolean marketOnFalse() {
+        return this.marketOn = false;
     }
 
     public double getCurrentPrice(int i) {

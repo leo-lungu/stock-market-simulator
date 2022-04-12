@@ -37,14 +37,6 @@ public class Account{
         this.balance = amount;
     }
 
-    public void setCurrency(String currency){ //sets balance
-        this.currency = currency;
-    }
-
-    public String getCurrency(){ //gets balance
-        return this.currency;
-    }   
-
     public void deposit(double amount){ //deposits into the account
         this.balance += amount;
     }
@@ -56,13 +48,6 @@ public class Account{
             this.balance -= cost; //if there is, money is withdrawn
         }
     }
-
-    public int getUniqueId() { //uniqueid
-        int id = 0; //initialises an id
-        id = counter++; //adds onto it
-        return id;
-    }
-
 
     public void addStock(String stock, int amount) {
         if (stock.equals("AAPL")) {
