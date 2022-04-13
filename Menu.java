@@ -1,5 +1,3 @@
-import java.util.concurrent.TimeUnit;
-
 public class Menu{
 
     private User user;
@@ -11,11 +9,6 @@ public class Menu{
         user = new User();
         System.out.println("test3");
         gui f = new gui(this.user);
-        try {
-            TimeUnit.SECONDS.sleep(10);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
     }
 
     public User getUser() {

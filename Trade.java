@@ -29,7 +29,4 @@ public class Trade{
         System.out.println("amount: " + amount);
         return amount;
     }
-
-    
-
 }
