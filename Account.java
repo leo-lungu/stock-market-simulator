@@ -3,9 +3,7 @@ import java.util.ArrayList;
 public class Account{
     //creates the variables
     private double balance;
-    private double interest = 0.01;
     static int counter;
-    String currency;
     ArrayList<Integer> stocksHeld = new ArrayList<Integer>();
 
     public Account(){
@@ -19,26 +17,16 @@ public class Account{
         this.balance = balance; //sets the account balance
     }
 
-
-    public Account(double balance, double interestRate){ //account constructor but for accounts with a special interest rate
-        this.interest = interestRate; //sets interest rate too
-        this.balance = balance;
-    }
-
-    public double getInterest() { //gets the interest
-        return this.interest;
-    }
-
     public double getBalance(){ //gets balance
         return this.balance;
     }    
 
-    public void setBalance(double amount){ //sets balance
-        this.balance = amount;
-    }
-
     public void deposit(double amount){ //deposits into the account
-        this.balance += amount;
+        if (amount < 0) {
+            System.out.println("Must be positive.");
+        } else {
+            this.balance += amount;
+        }
     }
     
     public void withdraw(double cost) { //withdraws from the account
@@ -54,7 +42,7 @@ public class Account{
             this.stocksHeld.set(0, amount);
         } else if(stock.equals("NVDA")) {
             this.stocksHeld.set(1, amount);
-        } else if (stock.equals("AMZN")) {
+        } else if (stock.equals("GOOG")) {
             this.stocksHeld.set(2, amount);
         } 
     }
@@ -65,7 +53,7 @@ public class Account{
             stockNo = this.stocksHeld.get(0);
         } else if(stock.equals("NVDA")) {
             stockNo = this.stocksHeld.get(1);
-        } else if (stock.equals("AMZN")) {
+        } else if (stock.equals("GOOG")) {
             stockNo = this.stocksHeld.get(2);
         } 
         return stockNo;
@@ -77,7 +65,7 @@ public class Account{
             stockNo = 0;
         } else if(stock.equals("NVDA")) {
             stockNo = 1;
-        } else if (stock.equals("AMZN")) {
+        } else if (stock.equals("GOOG")) {
             stockNo = 2;
         } 
         return stockNo;

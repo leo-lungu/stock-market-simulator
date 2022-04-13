@@ -1,17 +1,18 @@
+
 import javax.swing.*;
 import javax.swing.JButton;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowListener;
+import java.awt.event.*;
 
 public class gui extends Trade{
     public gui(User user) {
         Market m = new Market();
-        System.out.println("test");
         JFrame f = new JFrame("TradeIT");
-        System.out.println("test2");
-
-        JButton button = new JButton("Click to Close!");
+        JButton button = new JButton("Exit");
+        Prompt acp = new Prompt();
 
         double price0 =m.getCurrentPrice(0);
         String s0 = Double.toString(price0);
@@ -32,7 +33,7 @@ public class gui extends Trade{
         labelCurrentPrice2.setBounds(550,550, 100,30);
 
         button.setLayout(null);
-        button.setBounds(505, 50, 50, 50);
+        button.setBounds(505, 50, 100, 100);
         button.addActionListener(e -> {
             f.dispose();
             m.marketOnFalse();
@@ -74,6 +75,13 @@ public class gui extends Trade{
         f.add(labelCurrentPrice2);
         f.add(tp);  
         f.add(button);
+        f.addWindowListener(new WindowAdapter() {
+            public void windowClosing(WindowEvent we) {
+                f.dispose(); // use dispose method 
+                m.marketOnFalse();
+            }
+        }
+        );
         f.setSize(700,720);
         f.setLayout(null);  
         f.setVisible(true);
@@ -81,12 +89,11 @@ public class gui extends Trade{
         timer.start();
     }
     
-
     public static JPanel tabBuy(JPanel p1, User user, Market m) {
         JButton buy = new JButton("Buy");
         p1=new JPanel();
-        String country[]={"AAPL","NVDA","GOOG"};
-        JComboBox cb=new JComboBox(country);
+        String stocks[]={"AAPL","NVDA","GOOG"};
+        JComboBox<String> cb = new JComboBox<>(stocks);
         cb.setBounds(50, 50,90,20);
         JTextField tf1 = new JTextField();
         tf1.setBounds(70,70,150,20);
@@ -94,14 +101,18 @@ public class gui extends Trade{
         p1.add(tf1);
         p1.add(buy);
         p1.add(buy);
-
         buy.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 String data = "Bought: " + cb.getItemAt(cb.getSelectedIndex());
                 System.out.println(data);
-                String stock = (String) cb.getItemAt(cb.getSelectedIndex());
-                int amount = Integer. parseInt(tf1.getText());
-                buyStock(stock, amount, user, m);
+                try {
+                    String stock = (String) cb.getItemAt(cb.getSelectedIndex());
+                    int amount = Integer. parseInt(tf1.getText());
+                    buyStock(stock, amount, user, m);
+                } catch(Exception exc) {
+                    System.out.println("Must be an integer!");
+                }
+                
             }
         });
         return p1;
@@ -110,8 +121,8 @@ public class gui extends Trade{
     public static JPanel tabSell(JPanel p2, User user) {
         JButton sell = new JButton("Sell");
         p2=new JPanel();
-        String country[]={"AAPL","NVDA","GOOG"};
-        JComboBox cb=new JComboBox(country);
+        String stocks[]={"AAPL","NVDA","GOOG"};
+        JComboBox<String> cb = new JComboBox<>(stocks);
         cb.setBounds(50, 50,90,20);
         JTextField tf1 = new JTextField();
         p2.add(cb);
@@ -122,9 +133,13 @@ public class gui extends Trade{
             public void actionPerformed(ActionEvent e) {
                 String data = "Sold: " + cb.getItemAt(cb.getSelectedIndex());
                 System.out.println(data);
-                String stock = (String) cb.getItemAt(cb.getSelectedIndex());
-                int amount = Integer.parseInt(tf1.getText());
-                sellStock(stock, amount, user);
+                try {
+                    String stock = (String) cb.getItemAt(cb.getSelectedIndex());
+                    int amount = Integer.parseInt(tf1.getText());
+                    sellStock(stock, amount, user);
+                } catch (Exception exc) {
+                        System.out.println("Must be an integer!");
+                }
             }
         });
         return p2;
@@ -147,8 +162,8 @@ public class gui extends Trade{
         double price2 =m.getCurrentPrice(2);
         String s2 = Double.toString(price2);
         System.out.println(m.getCurrentPrice(2));
-        JLabel labelCurrentPrice2 = new JLabel("Current price of AMZN: " + s2);
-        JLabel labelStock2 = new JLabel("Number of AMZN Stocks: " + user.getAccount().getStockHeld("AMZN"));
+        JLabel labelCurrentPrice2 = new JLabel("Current price of GOOG: " + s2);
+        JLabel labelStock2 = new JLabel("Number of GOOG Stocks: " + user.getAccount().getStockHeld("GOOG"));
 
         ActionListener taskPerformer = new ActionListener() {
             public void actionPerformed(ActionEvent evt) {
@@ -159,11 +174,11 @@ public class gui extends Trade{
                 double price1 =m.getCurrentPrice(1);
                 String s1 = Double.toString(price1);
                 labelCurrentPrice1.setText("Current price of NVDA: " + s1);
-                labelStock0.setText("Number of NVDA Stocks: " + user.getAccount().getStockHeld("NVDA"));
+                labelStock1.setText("Number of NVDA Stocks: " + user.getAccount().getStockHeld("NVDA"));
                 double price2 =m.getCurrentPrice(2);
                 String s2 = Double.toString(price2);
-                labelCurrentPrice2.setText("Current price of AMZN: " + s2);
-                labelStock0.setText("Number of AMZN Stocks: " + user.getAccount().getStockHeld("AMZN"));
+                labelCurrentPrice2.setText("Current price of GOOGN: " + s2);
+                labelStock2.setText("Number of GOOG Stocks: " + user.getAccount().getStockHeld("GOOG"));
             }
         };
         p3.add(labelCurrentPrice0);
@@ -186,8 +201,17 @@ public class gui extends Trade{
         p4.add(deposit);
         deposit.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                int amount = Integer.parseInt(tf1.getText());
-                user.getAccount().deposit(amount);
+                int amount;
+                if (tf1.getText().equals("")) {
+                    amount = 0;
+                } else {
+                    amount = Integer.parseInt(tf1.getText());
+                }
+                try {
+                    user.getAccount().deposit(amount);
+                } catch (Exception exc) {
+                    System.out.println("Must be an integer!");
+                }
             }
         });
         return p4;

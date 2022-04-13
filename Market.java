@@ -11,7 +11,7 @@ public class Market{
         this.stocks = new ArrayList<Stocks>();
         stocks.add(new Stocks("AAPL", 180));
         stocks.add(new Stocks("NVDA", 2680));
-        stocks.add(new Stocks("AMZN", 550));
+        stocks.add(new Stocks("GOOG", 550));
     
         Thread thread = new Thread(new Runnable() {
             public void run() {

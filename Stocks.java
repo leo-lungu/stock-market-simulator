@@ -14,10 +14,4 @@ public class Stocks{
     public double getPrice() {
         return this.currentPrice;
     }
-
-    public String getTicker() {
-        return this.ticker;
-    }
-
-
 }
