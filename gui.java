@@ -10,7 +10,8 @@ import java.awt.event.*;
 public class gui {
     public gui(User user) {
         Market m = new Market();
-        Trade t = new Trade();
+        Trade sell = new Sell();
+        Trade buy = new Buy();
         JFrame f = new JFrame("TradeIT");
         JButton button = new JButton("Exit");
 
@@ -38,6 +39,7 @@ public class gui {
             f.dispose();
             m.marketOnFalse();
         });
+
         ActionListener taskPerformer = new ActionListener() {
             public void actionPerformed(ActionEvent evt) {
                 double price0 =m.getCurrentPrice(0);
@@ -53,13 +55,13 @@ public class gui {
         };
 
         JPanel p1 = null;
-        p1 = tabBuy(p1, user, m, t);
+        p1 = tabBuy(p1, user, m, buy);
         p1.setLayout(new GridLayout(3, 1));
         JPanel p2 = null;
-        p2 = tabSell(p2, user, t);
+        p2 = tabSell(p2, user, sell);
         p2.setLayout(new GridLayout(3, 1));
         JPanel p3 = null;
-        p3 = tabPortfolio(p3, user, m, t);
+        p3 = tabPortfolio(p3, user, m, buy);
         p3.setLayout(new GridLayout(3, 1));
         JPanel p4 = null;
         p4 = tabDeposit(p4, user);
@@ -89,8 +91,8 @@ public class gui {
         timer.start();
     }
     
-    public static JPanel tabBuy(JPanel p1, User user, Market m, Trade t) {
-        JButton buy = new JButton("Buy");
+    public static JPanel tabBuy(JPanel p1, User user, Market m, Trade buy) {
+        JButton buyButton = new JButton("Buy");
         p1=new JPanel();
         String stocks[]={"AAPL","NVDA","GOOG"};
         JComboBox<String> cb = new JComboBox<>(stocks);
@@ -99,16 +101,15 @@ public class gui {
         tf1.setBounds(70,70,150,20);
         p1.add(cb);
         p1.add(tf1);
-        p1.add(buy);
-        p1.add(buy);
-        buy.addActionListener(new ActionListener() {
+        p1.add(buyButton);
+        buyButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 String data = "Bought: " + cb.getItemAt(cb.getSelectedIndex());
                 System.out.println(data);
                 try {
                     String stock = (String) cb.getItemAt(cb.getSelectedIndex());
                     int amount = Integer. parseInt(tf1.getText());
-                    t.buyStock(stock, amount, user, m);
+                    buy.trade(stock, amount, user, m);
                 } catch(Exception exc) {
                     System.out.println("Must be an integer!");
                 }
@@ -118,8 +119,8 @@ public class gui {
         return p1;
     }
 
-    public static JPanel tabSell(JPanel p2, User user, Trade t) {
-        JButton sell = new JButton("Sell");
+    public static JPanel tabSell(JPanel p2, User user, Trade sell) {
+        JButton sellButton = new JButton("Sell");
         p2=new JPanel();
         String stocks[]={"AAPL","NVDA","GOOG"};
         JComboBox<String> cb = new JComboBox<>(stocks);
@@ -127,16 +128,16 @@ public class gui {
         JTextField tf1 = new JTextField();
         p2.add(cb);
         p2.add(tf1, BorderLayout.SOUTH);
-        p2.add(sell);
+        p2.add(sellButton);
         
-        sell.addActionListener(new ActionListener() {
+        sellButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 String data = "Sold: " + cb.getItemAt(cb.getSelectedIndex());
                 System.out.println(data);
                 try {
                     String stock = (String) cb.getItemAt(cb.getSelectedIndex());
                     int amount = Integer.parseInt(tf1.getText());
-                    t.sellStock(stock, amount, user);
+                    sell.trade(stock, amount, user, null);
                 } catch (Exception exc) {
                         System.out.println("Must be an integer!");
                 }

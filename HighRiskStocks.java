@@ -1,3 +1,4 @@
+
 public class HighRiskStocks extends Stocks{
     double interest;
     double differentTrades;
