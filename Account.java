@@ -2,6 +2,13 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.Scanner;
 
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.DocumentBuilder;
+import org.w3c.dom.Document;
+import org.w3c.dom.NodeList;
+import org.w3c.dom.Node;
+import org.w3c.dom.Element;
+
 public class Account{
     //creates the variables
     private double balance;
@@ -9,11 +16,24 @@ public class Account{
     ArrayList<Double> stocksHeld = new ArrayList<Double>();
 
     public Account(){
-        this.balance=0; //initialises the account balance
-        this.stocksHeld.add(0.0);
-        this.stocksHeld.add(0.0);
-        this.stocksHeld.add(0.0);
-        this.stocksHeld.add(0.0);
+        try {
+            File file = new File("account.xml");
+            DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
+            DocumentBuilder db = dbf.newDocumentBuilder();
+            Document document = db.parse(file);
+            document.getDocumentElement().normalize();
+            NodeList nList = document.getElementsByTagName("account");
+                Node nNode = nList.item(0);
+                    Element eElement = (Element) nNode;
+                    this.balance = (Double.parseDouble(eElement.getElementsByTagName("balance").item(0).getTextContent()));
+                    this.stocksHeld.add(Double.parseDouble(eElement.getElementsByTagName("aapl").item(0).getTextContent()));
+                    this.stocksHeld.add(Double.parseDouble(eElement.getElementsByTagName("nvda").item(0).getTextContent()));
+                    this.stocksHeld.add(Double.parseDouble(eElement.getElementsByTagName("goog").item(0).getTextContent()));
+                    this.stocksHeld.add(Double.parseDouble(eElement.getElementsByTagName("btc").item(0).getTextContent()));
+        }
+        catch(Exception e) {
+            System.out.println(e);
+        } 
     }    
 
     public Account(double balance){
@@ -82,20 +102,5 @@ public class Account{
 
     public ArrayList<Double> getPortfolio() {
         return this.stocksHeld;
-    }
-
-    public void loadFile() {
-        try {
-            File myObj = new File("account.txt");
-            Scanner myReader = new Scanner(myObj);
-            while (myReader.hasNextLine()) {
-                String data = myReader.nextLine();
-                System.out.println(data);
-        }
-          myReader.close();
-        } catch (Exception e) {
-          System.out.println("An error occurred.");
-          e.printStackTrace();
-        }
     }
 }

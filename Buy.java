@@ -1,3 +1,4 @@
+
 public class Buy extends Trade{
     public Buy(){
     }

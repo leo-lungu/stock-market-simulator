@@ -43,6 +43,7 @@ public class MarketCrypto extends Market{
     public void cryptoStake(Crypto btc, User user) {
         boolean a = true;
         try {
+            Thread.sleep(100);
             while (a = getMarketOn()) {
                 double stake = btc.getStakeRate();
                 double amountStock = (user.getAccount().getStockHeld("BTC")*stake);
