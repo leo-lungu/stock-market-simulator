@@ -6,13 +6,16 @@ import java.util.concurrent.TimeUnit;
 public class Market{ 
 
     boolean marketOn = true;
-    private ArrayList<Stocks> stocks;
+    private ArrayList<Asset> assets;
 
     public Market() {
-        this.stocks = new ArrayList<Stocks>();
-        stocks.add(new HighRiskStocks("AAPL", 180));
-        stocks.add(new MediumRiskStocks("NVDA", 2680));
-        stocks.add(new LowRiskStocks("GOOG", 550));
+        this.assets = new ArrayList<Asset>();
+        Asset AAPL = new Stock("AAPL", 180);
+        Asset NVDA = new Stock("NVDA", 2680);
+        Asset GOOG = new Stock("GOOG", 550);
+        assets.add(AAPL);
+        assets.add(NVDA);
+        assets.add(GOOG);
     
         Thread thread = new Thread(new Runnable() {
             public void run() {
@@ -26,14 +29,12 @@ public class Market{
         boolean a = true;
         try {
             while (a = getMarketOn()) {
-                double marketChange0 = new Random().nextDouble() * (1 + (stocks.get(0).getDifferenceTrades()) - (1 - (stocks.get(0).getDifferenceTrades()))) + (1 - (stocks.get(0).getDifferenceTrades())); 
-                stocks.get(0).setPrice(stocks.get(0).getPrice()*marketChange0);
-                System.out.println("sleep2");
-                double marketChange1 = new Random().nextDouble() * (1 + (stocks.get(1).getDifferenceTrades()) - (1 - (stocks.get(1).getDifferenceTrades()))) + (1 - (stocks.get(1).getDifferenceTrades())); 
-                stocks.get(1).setPrice(stocks.get(1).getPrice()*marketChange1);
-                double marketChange2 = new Random().nextDouble() * (1 + (stocks.get(2).getDifferenceTrades()) - (1 - (stocks.get(2).getDifferenceTrades()))) + (1 - (stocks.get(2).getDifferenceTrades())); 
-                stocks.get(2).setPrice(stocks.get(2).getPrice()*marketChange2);
-                System.out.println("sleep1");
+                double marketChange0 = new Random().nextDouble() * (1 + (assets.get(0).getDifferenceTrades()) - (1 - (assets.get(0).getDifferenceTrades()))) + (1 - (assets.get(0).getDifferenceTrades())); 
+                assets.get(0).setPrice(assets.get(0).getPrice()*marketChange0);
+                double marketChange1 = new Random().nextDouble() * (1 + (assets.get(1).getDifferenceTrades()) - (1 - (assets.get(1).getDifferenceTrades()))) + (1 - (assets.get(1).getDifferenceTrades())); 
+                assets.get(1).setPrice(assets.get(1).getPrice()*marketChange1);
+                double marketChange2 = new Random().nextDouble() * (1 + (assets.get(2).getDifferenceTrades()) - (1 - (assets.get(2).getDifferenceTrades()))) + (1 - (assets.get(2).getDifferenceTrades())); 
+                assets.get(2).setPrice(assets.get(2).getPrice()*marketChange2);
                 TimeUnit.SECONDS.sleep(1);
             }
         } catch (InterruptedException e) {
@@ -49,7 +50,15 @@ public class Market{
         return this.marketOn = false;
     }
 
+    public ArrayList<Asset> getAsset() {
+        return this.assets;
+    }
+
+    public void setAsset(Asset asset) {
+        this.assets.add(asset);
+    }
+
     public double getCurrentPrice(int i) {
-        return this.stocks.get(i).getPrice();
+        return this.assets.get(i).getPrice();
     }
 }

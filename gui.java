@@ -4,12 +4,12 @@ import javax.swing.JButton;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.WindowListener;
 import java.awt.event.*;
 
 public class gui {
     public gui(User user) {
         Market m = new Market();
+        Market mc = new MarketCrypto(user);
         Trade sell = new Sell();
         Trade buy = new Buy();
         JFrame f = new JFrame("TradeIT");
@@ -17,21 +17,23 @@ public class gui {
 
         double price0 =m.getCurrentPrice(0);
         String s0 = Double.toString(price0);
-        System.out.println(m.getCurrentPrice(0));
         JLabel labelCurrentPrice0 = new JLabel(s0);
         labelCurrentPrice0.setBounds(350,550, 100,30);
 
         double price1 =m.getCurrentPrice(1);
         String s1 = Double.toString(price1);
-        System.out.println(m.getCurrentPrice(1));
         JLabel labelCurrentPrice1 = new JLabel(s1);
         labelCurrentPrice1.setBounds(450,550, 100,30);
 
         double price2 =m.getCurrentPrice(2);
         String s2 = Double.toString(price2);
-        System.out.println(m.getCurrentPrice(2));
         JLabel labelCurrentPrice2 = new JLabel(s2);
         labelCurrentPrice2.setBounds(550,550, 100,30);
+        
+        double price3 =mc.getCurrentPrice(3);
+        String s3 = Double.toString(price3);
+        JLabel labelCurrentPrice3 = new JLabel(s3);
+        labelCurrentPrice3.setBounds(150,550, 100,30);
 
         button.setLayout(null);
         button.setBounds(505, 50, 100, 100);
@@ -51,18 +53,21 @@ public class gui {
                 double price2 =m.getCurrentPrice(2);
                 String s2 = Double.toString(price2);
                 labelCurrentPrice2.setText(s2);
+                double price3 =mc.getCurrentPrice(3);
+                String s3 = Double.toString(price3);
+                labelCurrentPrice3.setText(s3);
             }
         };
 
         JPanel p1 = null;
-        p1 = tabBuy(p1, user, m, buy);
+        p1 = tabBuy(p1, user, m, mc, buy);
         p1.setLayout(new GridLayout(3, 1));
         JPanel p2 = null;
         p2 = tabSell(p2, user, sell);
         p2.setLayout(new GridLayout(3, 1));
         JPanel p3 = null;
-        p3 = tabPortfolio(p3, user, m, buy);
-        p3.setLayout(new GridLayout(3, 1));
+        p3 = tabPortfolio(p3, user, m, mc, buy);
+        p3.setLayout(new GridLayout(4, 1));
         JPanel p4 = null;
         p4 = tabDeposit(p4, user);
         p4.setLayout(new GridLayout(4, 0));
@@ -75,6 +80,7 @@ public class gui {
         f.add(labelCurrentPrice0);
         f.add(labelCurrentPrice1);
         f.add(labelCurrentPrice2);
+        f.add(labelCurrentPrice3);
         f.add(tp);  
         f.add(button);
         f.addWindowListener(new WindowAdapter() {
@@ -87,14 +93,20 @@ public class gui {
         f.setSize(700,720);
         f.setLayout(null);  
         f.setVisible(true);
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException e1) {
+            // TODO Auto-generated catch block
+            e1.printStackTrace();
+        }
         Timer timer = new Timer(999, taskPerformer);
         timer.start();
     }
     
-    public static JPanel tabBuy(JPanel p1, User user, Market m, Trade buy) {
+    public static JPanel tabBuy(JPanel p1, User user, Market m, Market mc, Trade buy) {
         JButton buyButton = new JButton("Buy");
         p1=new JPanel();
-        String stocks[]={"AAPL","NVDA","GOOG"};
+        String stocks[]={"AAPL","NVDA","GOOG","BTC"};
         JComboBox<String> cb = new JComboBox<>(stocks);
         cb.setBounds(50,50,90,20);
         JTextField tf1 = new JTextField();
@@ -109,7 +121,11 @@ public class gui {
                 try {
                     String stock = (String) cb.getItemAt(cb.getSelectedIndex());
                     int amount = Integer. parseInt(tf1.getText());
-                    buy.trade(stock, amount, user, m);
+                    if (stock == "BTC") {
+                        buy.trade(stock, amount, user, mc);
+                    } else {
+                        buy.trade(stock, amount, user, m);
+                    }
                 } catch(Exception exc) {
                     System.out.println("Must be an integer!");
                 }
@@ -122,7 +138,7 @@ public class gui {
     public static JPanel tabSell(JPanel p2, User user, Trade sell) {
         JButton sellButton = new JButton("Sell");
         p2=new JPanel();
-        String stocks[]={"AAPL","NVDA","GOOG"};
+        String stocks[]={"AAPL","NVDA","GOOG","BTC"};
         JComboBox<String> cb = new JComboBox<>(stocks);
         cb.setBounds(50, 50,90,20);
         JTextField tf1 = new JTextField();
@@ -146,25 +162,27 @@ public class gui {
         return p2;
     }
 
-    public static JPanel tabPortfolio(JPanel p3, User user, Market m, Trade t) {
+    public static JPanel tabPortfolio(JPanel p3, User user, Market m, Market mc, Trade t ) {
         p3 = new JPanel();
         double price0 = m.getCurrentPrice(0);
         String s0 = Double.toString(price0);
-        System.out.println(m.getCurrentPrice(0));
         JLabel labelCurrentPrice0 = new JLabel("Current price of AAPL: " + s0);
         JLabel labelStock0 = new JLabel("Number of AAPL Stocks: " + user.getAccount().getStockHeld("AAPL"));
 
         double price1 = m.getCurrentPrice(1);
         String s1 = Double.toString(price1);
-        System.out.println(m.getCurrentPrice(1));
         JLabel labelCurrentPrice1 = new JLabel("Current price of NVDA: " + s1);
         JLabel labelStock1 = new JLabel("Number of NVDA Stocks: " + user.getAccount().getStockHeld("NVDA"));
 
         double price2 =m.getCurrentPrice(2);
         String s2 = Double.toString(price2);
-        System.out.println(m.getCurrentPrice(2));
         JLabel labelCurrentPrice2 = new JLabel("Current price of GOOG: " + s2);
         JLabel labelStock2 = new JLabel("Number of GOOG Stocks: " + user.getAccount().getStockHeld("GOOG"));
+
+        double price3 =mc.getCurrentPrice(3);
+        String s3 = Double.toString(price3);
+        JLabel labelCurrentPrice3 = new JLabel("Current price of BTC: " + s3);
+        JLabel labelStock3 = new JLabel("Number of BTC Coins: " + user.getAccount().getStockHeld("BTC"));
 
         ActionListener taskPerformer = new ActionListener() {
             public void actionPerformed(ActionEvent evt) {
@@ -178,8 +196,13 @@ public class gui {
                 labelStock1.setText("Number of NVDA Stocks: " + user.getAccount().getStockHeld("NVDA"));
                 double price2 =m.getCurrentPrice(2);
                 String s2 = Double.toString(price2);
-                labelCurrentPrice2.setText("Current price of GOOGN: " + s2);
+                labelCurrentPrice2.setText("Current price of GOOG: " + s2);
                 labelStock2.setText("Number of GOOG Stocks: " + user.getAccount().getStockHeld("GOOG"));
+                double price3 =mc.getCurrentPrice(3);
+                String s3 = Double.toString(price3);
+                labelCurrentPrice3.setText("Current price of BTC: " + s3);
+                labelStock3.setText("Number of BTC Coins: " + user.getAccount().getStockHeld("BTC"));
+                
             }
         };
         p3.add(labelCurrentPrice0);
@@ -188,9 +211,10 @@ public class gui {
         p3.add(labelStock1);
         p3.add(labelCurrentPrice2);
         p3.add(labelStock2);
-        Timer timer = new Timer(999, taskPerformer);
+        p3.add(labelCurrentPrice3);
+        p3.add(labelStock3);
+        Timer timer = new Timer(1000, taskPerformer);
         timer.start();
-        System.out.println("test");
         return p3;
     }
 
