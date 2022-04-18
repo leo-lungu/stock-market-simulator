@@ -1,17 +1,12 @@
 public class Menu{
 
-    private User user;
+    private Account account; //creates the account variable
     public static void main(String[] args) {
-        new Menu();
+        new Menu(); //constructor method and starts the program
     }
 
     public Menu() {
-        user = new User();
-        System.out.println("test3");
-        gui f = new gui(this.user);
-    }
-
-    public User getUser() {
-        return user;
+        account = new Account();
+        GUI f = new GUI(account); //calls the gui
     }
 }
