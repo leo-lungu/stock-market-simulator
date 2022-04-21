@@ -46,10 +46,8 @@ public class Market{
     public void setStocks(Scanner file) { //sets the stocks in the arraylist of type Asset
         Asset AAPL = new Stock("AAPL", Double.parseDouble(file.nextLine())); //takes the prices from the file
         Asset NVDA = new Stock("NVDA", Double.parseDouble(file.nextLine()));
-        Asset GOOG = new Stock("GOOG", Double.parseDouble(file.nextLine()));
         assets.add(AAPL);
         assets.add(NVDA);
-        assets.add(GOOG);
     }
 
     public void marketRunning() { //this method runs in the background
@@ -59,8 +57,6 @@ public class Market{
                 assets.get(0).setPrice(assets.get(0).getPrice()*marketChange0); //calculates the new prices using random algorithm
                 double marketChange1 = new Random().nextDouble() * (1 + (assets.get(1).getDifferenceTrades()) - (1 - (assets.get(1).getDifferenceTrades()))) + (1 - (assets.get(1).getDifferenceTrades())); 
                 assets.get(1).setPrice(assets.get(1).getPrice()*marketChange1);
-                double marketChange2 = new Random().nextDouble() * (1 + (assets.get(2).getDifferenceTrades()) - (1 - (assets.get(2).getDifferenceTrades()))) + (1 - (assets.get(2).getDifferenceTrades())); 
-                assets.get(2).setPrice(assets.get(2).getPrice()*marketChange2);
                 TimeUnit.SECONDS.sleep(1);
             }
         } catch (InterruptedException e) {

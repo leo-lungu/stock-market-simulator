@@ -37,43 +37,43 @@ public class GUI {
         JButton buttonReset = new JButton("Reset");
 
         JLabel labelCurrentPrice0 = new JLabel();
-        labelCurrentPrice0.setBounds(61,440, 100,30);
+        labelCurrentPrice0.setBounds(61, 465, 100, 30);
 
         JLabel labelCurrentPrice1 = new JLabel();
-        labelCurrentPrice1.setBounds(61,480, 100,30);
+        labelCurrentPrice1.setBounds(61, 505, 100, 30);
 
         JLabel labelCurrentPrice2 = new JLabel(); 
-        labelCurrentPrice2.setBounds(267,440, 100,30);
+        labelCurrentPrice2.setBounds(267, 465, 100, 30);
               
         JLabel labelCurrentPrice3 = new JLabel();
-        labelCurrentPrice3.setBounds(267,480, 100,30);
+        labelCurrentPrice3.setBounds(267, 505, 100, 30);
         
         JLabel labelBalance = new JLabel();
-        labelBalance.setBounds(190,20, 200,30);
+        labelBalance.setBounds(210, 20, 200, 30);
 
         buttonExit.setLayout(null);
-        buttonExit.setBounds(195, 520, 60, 40);
+        buttonExit.setBounds(160, 550, 80, 40);
 
         buttonReset.setLayout(null);
-        buttonReset.setBounds(260, 520, 60, 40);
+        buttonReset.setBounds(260, 550, 80, 40);
         
         //updates the different prices
         ActionListener taskPerformer = new ActionListener() {
             public void actionPerformed(ActionEvent evt) {
                 double price0 = round(m.getCurrentPrice(0)); //uses the Market class to get the price
-                String s0 = "AAPL: £" + (price0);
+                String s0 = "AAPL: $" + (price0);
                 labelCurrentPrice0.setText(s0);
                 double price1 = round(m.getCurrentPrice(1));
-                String s1 = "NVDA: £" + (price1);
+                String s1 = "NVDA: $" + (price1);
                 labelCurrentPrice1.setText(s1);
-                double price2 = round(m.getCurrentPrice(2));
-                String s2 = "GOOG: £" + (price2);
+                double price2 = round(mc.getCurrentPrice(0));
+                String s2 = "BTC: $" + (price2);
                 labelCurrentPrice2.setText(s2);
-                double price3 = round(mc.getCurrentPrice(0)); //uses the MarketCrypto class to get the price
-                String s3 = "BTC: £" + (price3);
+                double price3 = round(mc.getCurrentPrice(1)); //uses the MarketCrypto class to get the price
+                String s3 = "ETH: $" + (price3);
                 double balance = round(account.getBalance());
                 labelCurrentPrice3.setText(s3);
-                String sb = "Balance: £" + (balance);
+                String sb = "Balance: $" + (balance);
                 labelBalance.setText(sb);
             }
         };
@@ -113,10 +113,10 @@ public class GUI {
         });
 
         buttonReset.addActionListener(e -> { //when reset button is clicked, it resets the balance and asset held by the account
-            account.addStock("AAPL", 0);
-            account.addStock("NVDA", 0);
-            account.addStock("GOOG", 0);
-            account.addStock("BTC", 0);
+            account.addAsset("AAPL", 0);
+            account.addAsset("NVDA", 0);
+            account.addAsset("BTC", 0);
+            account.addAsset("ETH", 0);
             account.setBalance(0);
             new PopUp("Reset Completed");
         });
@@ -130,7 +130,7 @@ public class GUI {
         }});
 
         //properties of the frame
-        f.setSize(500,600);
+        f.setSize(500,660);
         f.setLayout(null);  
         f.setVisible(true);
 
@@ -143,16 +143,16 @@ public class GUI {
      * Below are the panel methods.
      */
     
-    public static JPanel tabTrade(JPanel p1, Account account, Market m, Market mc, Trade buy, Trade sell) { //Trade panel
+    public  JPanel tabTrade(JPanel p1, Account account, Market m, Market mc, Trade buy, Trade sell) { //Trade panel
         p1=new JPanel(); //creates the panel
 
         JButton buyButton = new JButton("Buy"); //creates the 2 buttons to sell and buy the assets
         JButton sellButton = new JButton("Sell");
 
         //creates the labels and the lists for the panel
-        JLabel stocksText = new JLabel("Stock:");
+        JLabel stocksText = new JLabel("Asset:");
         JLabel amountText = new JLabel("Amount:");
-        String stocks[]={"AAPL","NVDA","GOOG","BTC"};
+        String stocks[]={"AAPL","NVDA","BTC","ETH"};
         JComboBox<String> cb = new JComboBox<>(stocks);
         JTextField tf1 = new JTextField();
 
@@ -176,12 +176,12 @@ public class GUI {
         buyButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 try {
-                    String stock = (String) cb.getItemAt(cb.getSelectedIndex()); //gets the item the account selected
+                    String asset = (String) cb.getItemAt(cb.getSelectedIndex()); //gets the item the account selected
                     double amount = Double.parseDouble(tf1.getText()); //and the amount they typed
-                    if (stock.equals("BTC")) { //checks whether it is a cryptocurrency
-                        buy.trade(stock, amount, account, mc); //calls the respective buy method
+                    if (asset.equals("ETH") || asset.equals("BTC")) { //checks whether it is a cryptocurrency
+                        buy.trade(asset, amount, account, mc); //calls the respective buy method
                     } else {
-                        buy.trade(stock, amount, account, m);
+                        buy.trade(asset, amount, account, m);
                     }
                 } catch(Exception exc) {
                     new PopUp("Error: must be an integer");
@@ -193,12 +193,12 @@ public class GUI {
         sellButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 try {
-                    String stock = (String) cb.getItemAt(cb.getSelectedIndex()); //gets the item the account
+                    String asset = (String) cb.getItemAt(cb.getSelectedIndex()); //gets the item the account
                     double amount = Double.parseDouble(tf1.getText()); //and the amount they typed
-                    if (stock == "BTC") { //checks whether it is a cryptocurrency
-                        sell.trade(stock, amount, account, mc); //calls the respective method
+                    if (asset == "ETH" || asset == "BTC") { //checks whether it is a cryptocurrency
+                        sell.trade(asset, amount, account, mc); //calls the respective method
                     } else {
-                        sell.trade(stock, amount, account, m);
+                        sell.trade(asset, amount, account, m);
                     }
                 } catch (Exception exc) {
                         new PopUp("Error: must be an integer");
@@ -210,29 +210,29 @@ public class GUI {
     }
 
     //panel for the portfolio
-    public static JPanel tabPortfolio(JPanel p2, Account account, Market m, Market mc, Trade t ) {
+    public  JPanel tabPortfolio(JPanel p2, Account account, Market m, Market mc, Trade t ) {
         p2 = new JPanel(); //creates the panel
 
         //creates the labels for the prices and the asset holdings by the account
         double price0 = m.getCurrentPrice(0);
         String s0 = Double.toString(price0);
         JLabel labelCurrentPrice0 = new JLabel("Price AAPL: " + s0);
-        JLabel labelStock0 = new JLabel(" AAPL Stocks: " + round(account.getStockHeld("AAPL"))); //gets the amount held from the Account class
+        JLabel labelStock0 = new JLabel(" AAPL Stocks: " + round(account.getAssetHeld("AAPL"))); //gets the amount held from the Account class
 
         double price1 = m.getCurrentPrice(1);
         String s1 = Double.toString(price1);
         JLabel labelCurrentPrice1 = new JLabel("Price NVDA: " + s1);
-        JLabel labelStock1 = new JLabel(" NVDA Stocks: " + round(account.getStockHeld("NVDA")));
+        JLabel labelStock1 = new JLabel(" NVDA Stocks: " + round(account.getAssetHeld("NVDA")));
 
-        double price2 =m.getCurrentPrice(2);
+        double price2 =mc.getCurrentPrice(0);
         String s2 = Double.toString(price2);
-        JLabel labelCurrentPrice2 = new JLabel("Price GOOG: " + s2);
-        JLabel labelStock2 = new JLabel(" GOOG Stocks: " + round(account.getStockHeld("GOOG")));
+        JLabel labelCurrentPrice2 = new JLabel("Price BTC: " + s2);
+        JLabel labelStock2 = new JLabel(" BTC Coins:" + round(account.getAssetHeld("BTC")));
 
-        double price3 =mc.getCurrentPrice(0);
+        double price3 =mc.getCurrentPrice(1);
         String s3 = Double.toString(price3);
-        JLabel labelCurrentPrice3 = new JLabel("Price BTC: " + s3);
-        JLabel labelStock3 = new JLabel(" BTC Coins: " + round(account.getStockHeld("BTC")));
+        JLabel labelCurrentPrice3 = new JLabel("Price ETH: " + s3);
+        JLabel labelStock3 = new JLabel(" ETH Coins: " + round(account.getAssetHeld("ETH")));
 
         //a method to update the prices using the timer variable below
         ActionListener taskPerformer = new ActionListener() {
@@ -240,19 +240,19 @@ public class GUI {
                 double price0 = round(m.getCurrentPrice(0));
                 String s0 = Double.toString(price0);
                 labelCurrentPrice0.setText("Price AAPL: " + s0);
-                labelStock0.setText(" AAPL Stocks: " + round(account.getStockHeld("AAPL")));
+                labelStock0.setText("AAPL Stocks: " + round(account.getAssetHeld("AAPL")));
                 double price1 = round(m.getCurrentPrice(1));
                 String s1 = Double.toString(price1);
                 labelCurrentPrice1.setText("Price NVDA: " + s1);
-                labelStock1.setText(" NVDA Stocks: " + round(account.getStockHeld("NVDA")));
-                double price2 = round(m.getCurrentPrice(2));
+                labelStock1.setText("NVDA Stocks: " + round(account.getAssetHeld("NVDA")));
+                double price2 = round(mc.getCurrentPrice(0));
                 String s2 = Double.toString(price2);
-                labelCurrentPrice2.setText("Price GOOG: " + s2);
-                labelStock2.setText(" GOOG Stocks: " + round(account.getStockHeld("GOOG")));
-                double price3 = round(mc.getCurrentPrice(0));
+                labelCurrentPrice2.setText("Price BTC: " + s2);
+                labelStock2.setText("BTC Stocks: " + round(account.getAssetHeld("BTC")));
+                double price3 = round(mc.getCurrentPrice(1));
                 String s3 = Double.toString(price3);
-                labelCurrentPrice3.setText("Current price of BTC: " + s3);
-                labelStock3.setText(" BTC Coins: " + round(account.getStockHeld("BTC")));
+                labelCurrentPrice3.setText("Current price of ETH: " + s3);
+                labelStock3.setText("ETH Coins: " + round(account.getAssetHeld("ETH")));
             }
         };
 
@@ -274,7 +274,7 @@ public class GUI {
     }
 
     //panel for depositing and withdrawing
-    public static JPanel tabBalance(JPanel p3, Account account) {
+    public JPanel tabBalance(JPanel p3, Account account) {
         p3=new JPanel(); //creating the panel
 
         //creating the buttons, thetext fields and the labels
@@ -306,7 +306,7 @@ public class GUI {
                     amount = Integer.parseInt(tf1.getText()); //gets the amount
                     try {
                         account.deposit(amount);
-                        new PopUp("Deposited: £" + amount);
+                        new PopUp("Deposited: $" + amount);
                     } catch (Exception exc) { //catches an exception
                         new PopUp("Error: must be an integer");
                     }
@@ -323,8 +323,11 @@ public class GUI {
                 } else {
                     amount = Integer.parseInt(tf1.getText()); //gets the amount
                     try {
+                        Double balanceOld = account.getBalance();
                         account.withdraw(amount);
-                        new PopUp("Withdrew: £" + amount);
+                        if (balanceOld > account.getBalance()) {
+                            new PopUp("Withdrew: $" + amount);
+                        }
                     } catch (Exception exc) { //catches an exception
                         new PopUp("Error: must be an integer");
                     }
@@ -334,7 +337,7 @@ public class GUI {
         return p3;
     }
 
-    public static double round(double number) { //method to round the numbers
+    public  double round(double number) { //method to round the numbers
         DecimalFormat df = new DecimalFormat("###.00"); //they are rounded to 2 decimal places
         String newNumber = df.format(number);
         number = Double.parseDouble(newNumber);

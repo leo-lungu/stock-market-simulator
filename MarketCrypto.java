@@ -18,10 +18,13 @@ public class MarketCrypto extends Market{ //sublcass
 
     public void setCrypto(Scanner file, Account account) { //sets the crypto prices
         Asset BTC = new Crypto("BTC", Double.parseDouble(file.nextLine()), 1.0005); //this has a stakerate unlike stocks
+        Asset ETH = new Crypto("ETH", Double.parseDouble(file.nextLine()), 1.0005); 
         getAsset().add(BTC); //adds the cryptocurrency to the asset arraylist
+        getAsset().add(ETH);
+        
         Thread threadCryptoMarket = new Thread(new Runnable() { //thread to run in the background
             public void run() {
-                cryptoStake(BTC, account); //only calls the cryptoStake method, as the marketRunning is called by Market as it is a subclass
+                cryptoStake(BTC, ETH, account); //only calls the cryptoStake method, as the marketRunning is called by Market as it is a subclass
             }
         });
         threadCryptoMarket.start(); //starts the thread
@@ -34,6 +37,10 @@ public class MarketCrypto extends Market{ //sublcass
                 double marketChange0 = new Random().nextDouble() * (1 + (getAsset().get(0).getDifferenceTrades()) - (1 - (getAsset().get(0).getDifferenceTrades()))) + (1 - (getAsset().get(0).getDifferenceTrades()));
                 marketChange0 = cryptoCrashMarket(marketChange0); //calls a method for market crashes
                 getAsset().get(0).setPrice(getAsset().get(0).getPrice()*marketChange0);
+
+                double marketChange1 = new Random().nextDouble() * (1 + (getAsset().get(1).getDifferenceTrades()) - (1 - (getAsset().get(1).getDifferenceTrades()))) + (1 - (getAsset().get(1).getDifferenceTrades()));
+                marketChange1 = cryptoCrashMarket(marketChange1); //calls a method for market crashes
+                getAsset().get(1).setPrice(getAsset().get(1).getPrice()*marketChange1);
                 TimeUnit.SECONDS.sleep(1); //waits one second
             }
         } catch (InterruptedException e) {
@@ -51,13 +58,16 @@ public class MarketCrypto extends Market{ //sublcass
         return marketChange0;
     }
 
-    public void cryptoStake(Asset BTC, Account account) { //stakes the cryptocurrency (interest)
+    public void cryptoStake(Asset BTC, Asset ETH, Account account) { //stakes the cryptocurrency (interest)
         try {
             Thread.sleep(100); //waits 0.1 seconds beofre it starts running the market
             while (true) { //for the entirity of the program it runs in the background
-                double stake = ((Crypto) BTC).getStakeRate(); //gets the stake rate
-                double amountCrypto = (account.getStockHeld("BTC") * stake); //calculates the new amount of crypto held
-                account.addStock("BTC", amountCrypto);
+                double stake0 = ((Crypto) BTC).getStakeRate(); //gets the stake rate
+                double amountCrypto0 = (account.getAssetHeld("BTC") * stake0); //calculates the new amount of crypto held
+                account.addAsset("BTC", amountCrypto0);
+                double stake1 = ((Crypto) ETH).getStakeRate(); //gets the stake rate
+                double amountCrypto1 = (account.getAssetHeld("ETH") * stake1); //calculates the new amount of crypto held
+                account.addAsset("ETH", amountCrypto1);
                 TimeUnit.SECONDS.sleep(1); //waits for 1 second before repeating in order to avoid
             }
         } catch (InterruptedException e) {

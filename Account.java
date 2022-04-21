@@ -14,7 +14,7 @@ import java.util.Scanner;
 
 public class Account{ //creates the instance variables which will be used throughout the program
     private double balance;
-    ArrayList<Double> stocksHeld = new ArrayList<Double>();
+    ArrayList<Double> assetsHeld = new ArrayList<Double>();
 
     public Account(){ //account constructor - sets up the account
         Scanner file = null;
@@ -25,10 +25,10 @@ public class Account{ //creates the instance variables which will be used throug
             e.printStackTrace();
         }
         this.balance = Double.parseDouble(file.nextLine()); //reads line by line
-        this.stocksHeld.add(Double.parseDouble(file.nextLine()));
-        this.stocksHeld.add(Double.parseDouble(file.nextLine()));
-        this.stocksHeld.add(Double.parseDouble(file.nextLine()));
-        this.stocksHeld.add(Double.parseDouble(file.nextLine()));
+        this.assetsHeld.add(Double.parseDouble(file.nextLine()));
+        this.assetsHeld.add(Double.parseDouble(file.nextLine()));
+        this.assetsHeld.add(Double.parseDouble(file.nextLine()));
+        this.assetsHeld.add(Double.parseDouble(file.nextLine()));
 
     }    
 
@@ -55,59 +55,59 @@ public class Account{ //creates the instance variables which will be used throug
         }
     }
 
-    public void addStock(String stock, double amount) { //adds the holdings of the user
-        switch (stock) {
+    public void addAsset(String asset, double amount) { //adds the holdings of the user
+        switch (asset) {
             case "AAPL":
-                this.stocksHeld.set(0, amount);
+                this.assetsHeld.set(0, amount);
                 break;
             case "NVDA":
-                this.stocksHeld.set(1, amount);
-                break;
-            case "GOOG":
-                this.stocksHeld.set(2, amount);
+                this.assetsHeld.set(1, amount);
                 break;
             case "BTC":
-                this.stocksHeld.set(3, amount);
+                this.assetsHeld.set(2, amount);
+                break;
+            case "ETH":
+                this.assetsHeld.set(3, amount);
                 break;
         }
     }
 
-    public double getStockHeld(String stock) { //gets how much the user holds by asset
-        double stockNo = 0;
-        switch (stock) {
+    public double getAssetHeld(String asset) { //gets how much the user holds by asset
+        double assetNo = 0;
+        switch (asset) {
             case "AAPL":
-                stockNo = this.stocksHeld.get(0);
+                assetNo = this.assetsHeld.get(0);
                 break;
             case "NVDA":
-                stockNo = this.stocksHeld.get(1);
-                break;
-            case "GOOG":
-                stockNo = this.stocksHeld.get(2);
+                assetNo = this.assetsHeld.get(1);
                 break;
             case "BTC":
-                stockNo = this.stocksHeld.get(3);
+                assetNo = this.assetsHeld.get(2);
+                break;
+            case "ETH":
+                assetNo = this.assetsHeld.get(3);
                 break;
         }
-        return stockNo; //returns
+        return assetNo; //returns
     }
 
-    public int stockInt(String stock) { //returns the stock as an integer so that it is easily identified
-        int stockNo = 0;
-        switch (stock) {
+    public int assetInt(String asset) { //returns the asset as an integer so that it is easily identified
+        int assetNo = 0;
+        switch (asset) {
             case "AAPL":
-                stockNo = 0;
+                assetNo = 0;
                 break;
             case "NVDA":
-                stockNo = 1;
-                break;
-            case "GOOG":
-                stockNo = 2;
+                assetNo = 1;
                 break;
             case "BTC":
-                stockNo = 3;
+                assetNo = 2;
+                break;
+            case "ETH":
+                assetNo = 3;
                 break;
         }
-        return stockNo;
+        return assetNo;
     }
 
     
@@ -121,10 +121,10 @@ public class Account{ //creates the instance variables which will be used throug
             file.createNewFile();
             myWriter = new FileWriter("account.txt");
             myWriter.write(String.valueOf(getBalance())); //writes in the file the information
-            myWriter.write("\r\n" + getStockHeld("AAPL"));
-            myWriter.write("\r\n" + getStockHeld("NVDA"));
-            myWriter.write("\r\n" + getStockHeld("GOOG"));
-            myWriter.write("\r\n" + getStockHeld("BTC"));
+            myWriter.write("\r\n" + getAssetHeld("AAPL"));
+            myWriter.write("\r\n" + getAssetHeld("NVDA"));
+            myWriter.write("\r\n" + getAssetHeld("BTC"));
+            myWriter.write("\r\n" + getAssetHeld("ETH"));
             myWriter.close();
         } catch (IOException e) {
             e.printStackTrace();

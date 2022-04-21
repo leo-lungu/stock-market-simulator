@@ -4,7 +4,7 @@
  */
 
 
-public abstract class Trade{ //abstract class
+public interface Trade{ //abstract class
 
     public abstract void trade(String stock, double amount, Account account, Market m); //abstract method used in Buy and Sell
 
